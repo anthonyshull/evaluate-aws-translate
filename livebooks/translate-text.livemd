@@ -1,0 +1,57 @@
+# Evaluate Aws Translate
+
+```elixir
+EvaluateAwsTranslate.Telemetry.start_link()
+```
+
+## Evaluation
+
+### Translating Text
+
+You can only translate text from **one** source language into **one** target language at a time. In order to translate into multiple languages, you must send multiple requests.
+
+```elixir
+text = File.read!("priv/texts/text.txt")
+
+EvaluateAwsTranslate.translate_text(text)
+```
+
+### Creating Custom Terminologies
+
+You can create a custom terminology by sending a base64-encoded file in various formats.
+Note two things. One, you can only use **one** custom terminology at a time. Two, it takes 10 minutes for terminology changes to be reflected in translations.
+
+```elixir
+Path.wildcard("priv/terminologies/*.csv")
+|> Enum.map(&EvaluateAwsTranslate.import_terminology/1)
+```
+
+### Translating Text with a Custom Terminology
+
+Here, we want to use a custom terminology so that "Massachusetts Bay Transportation Authority" is not translated. Translating with a custom terminology takes significantly longer than does translating without one.
+
+```elixir
+text = File.read!("priv/texts/text.txt")
+
+EvaluateAwsTranslate.translate_text(text, ["MASSACHUSSETS_BAY_TRANSPORTATION_AUTHORITY"])
+```
+
+### Translating Documents
+
+You can translate plain text or HTML documents. For HTML documents, the HTML elements are left intact and the [translate="no"](https://www.w3schools.com/tags/att_translate.asp) attribute value is respected. The maximum size of a document is 100 KB.
+
+```elixir
+document = File.read!("priv/documents/document.html")
+
+EvaluateAwsTranslate.translate_document(document)
+```
+
+### Translating Documents with Custom Terminologies
+
+Just like with text, you can translate documents with custom terminologies.
+
+```elixir
+document = File.read!("priv/documents/document.html")
+
+EvaluateAwsTranslate.translate_document(document, ["BOARD_OF_DIRECTORS"])
+```
