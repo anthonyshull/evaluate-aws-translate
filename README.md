@@ -52,6 +52,10 @@ Though, we would need to have a way of converting to and from `.po` files.
 You can create custom terminologies if you want to make specific translations.
 This also supports *not* translating some phrases like 'Massachusetts Bay Transportation Authority'.
 
+The maximum size of a custom terminology is 10 MB.
+
+It can take up to 10 minutes for changes to a custom terminology to affect translations.
+
 Translating using a custom terminology takes 5-6 times longer than translating without one.
 But, you're really only going from 75ms to 400ms.
 Because we aren't doing on-the-fly translations, I don't see this difference as important.
